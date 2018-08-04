@@ -612,7 +612,15 @@ class LDAPPrincipals(OdictStorage):
                           u'- key attribute "{2}" is missing!'
                     logger.warning(msg.format(_, att, self._key_attr))
                     continue
+
                 principal_id = att[self._key_attr][0]
+                try:
+                    principal_id.encode('ascii')
+                except UnicodeEncodeError:
+                    msg = u'Ignore CN: {0} ATTRIBUTES: {1} ' \
+                          u'- key attribute {2} contains non ascii characters.'
+                    logger.warning(msg.format(_, att, self._key_attr))
+                    continue
                 aliased = self._alias_dict(att)
                 keys = aliased.keys()
                 for key in keys:
