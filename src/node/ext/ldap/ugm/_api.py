@@ -607,6 +607,11 @@ class LDAPPrincipals(OdictStorage):
         if attrlist is not None:
             _results = list()
             for _, att in results:
+                if (self._key_attr not in att):
+                    msg = u'Ignore CN: {0} ATTRIBUTES: {1} '\
+                          u'- key attribute "{2}" is missing!'
+                    logger.warning(msg.format(_, att, self._key_attr))
+                    continue
                 principal_id = att[self._key_attr][0]
                 aliased = self._alias_dict(att)
                 keys = aliased.keys()
