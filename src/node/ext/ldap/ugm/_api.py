@@ -505,6 +505,12 @@ class LDAPPrincipals(OdictStorage):
             prdn = principal[1]['rdn']
             if prdn in self.context._deleted_children:
                 continue
+            if (self._key_attr not in principal[1]):
+                msg = u'Ignore CN: {0} ATTRIBUTES: {1} '\
+                        u'- key attribute "{2}" is missing!'
+                logger.warning(
+                        msg.format(prdn, principal[1], self._key_attr))
+                continue
             yield principal[1][self._key_attr][0]
         for principal in self.context._added_children:
             yield self.context[principal].attrs[self._key_attr]
@@ -612,7 +618,6 @@ class LDAPPrincipals(OdictStorage):
                           u'- key attribute "{2}" is missing!'
                     logger.warning(msg.format(_, att, self._key_attr))
                     continue
-
                 principal_id = att[self._key_attr][0]
                 try:
                     principal_id.encode('ascii')
