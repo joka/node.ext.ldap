@@ -99,8 +99,8 @@ class LDAPConnector(object):
         # Turning referrals off since they cause problems with MS Active
         # Directory More info: https://www.python-ldap.org/faq.html#usage
         self._con.set_option(ldap.OPT_REFERRALS, 0)
-        # Set network timeout for performing ldap operations
-        self._con.set_option(ldap.OPT_NETWORK_TIMEOUT, 120)
+        # Set network timeout for creating ldap connections
+        self._con.set_option(ldap.OPT_NETWORK_TIMEOUT, 5)
         # Make sure tcp connection stays alive to prevent droping by firewalls
         self._con.set_option(ldap.OPT_X_KEEPALIVE_IDLE, 120)
         self._con.set_option(ldap.OPT_X_KEEPALIVE_PROBES, 4000)
